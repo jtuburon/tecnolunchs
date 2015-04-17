@@ -19,6 +19,9 @@ def show_groups_list(context):
 @login_required(login_url='/tecnolunchs/')
 @register.inclusion_tag('group_detail.html', takes_context=True)
 def show_group_details(context, group_id):   
+	return get_group_details(group_id)
+
+def get_group_details(group_id):
 	if group_id == -1:
 		groups = TransporterGroup.objects.order_by('-assigned_date')		
 		group = groups[0] if len(groups)>0 else None
