@@ -31,6 +31,12 @@ class MainQueueMember(models.Model):
 	)
 	status = models.IntegerField(choices=MQM_STATUSES, default=0)
 	registration_date = models.DateField('date registered', auto_now_add=True)
+	USER_TYPES = (		
+		(1, 'PERMANENT'),
+		(2, 'TEMPORARY'),
+	)
+	member_type = models.IntegerField(choices=USER_TYPES, default=1)
+
 
 class PunishmentQueueMember(models.Model):
 	user = models.ForeignKey('auth.user')
@@ -42,11 +48,5 @@ class PunishmentQueueMember(models.Model):
 	status = models.IntegerField(choices=PQM_STATUSES, default=1)
 	registration_date = models.DateField('date registered', auto_now_add=True)
 	
-	USER_TYPES = (		
-		(1, 'PERMANENT'),
-		(2, 'TEMPORARY'),
-	)
-	member_type = models.IntegerField(choices=USER_TYPES, default=1)
-
 class GeneralConfiguration(models.Model):
 	group_size = models.IntegerField(default=3)

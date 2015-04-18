@@ -48,7 +48,7 @@ def generate_new_group():
 	if len(mqm_list)==0:
 		config = load_config()
 		group= TransporterGroup()
-		group.name = "TransportGroup #" + str(len(mqm_list) + 1)
+		group.name = "TransportGroup #" + str(TransporterGroup.objects.count() + 1)
 		group.save()		
 		assignables_list= get_assignable_members_list()
 		assignables_count = config.group_size if len(assignables_list) >= config.group_size else len(assignables_list)
@@ -56,6 +56,10 @@ def generate_new_group():
 		for i in range(assignables_count):
 			assignables_list[i].status=1;
 			assignables_list[i].save();
+			member = TransporterGroupMember()
+			member.transport_group= group
+			member.user =assignables_list[i].user
+			member.save();
 	
 def get_assignable_members_list():
 	mqm_busy_list = MainQueueMember.objects.filter(status = 1) 
@@ -71,14 +75,24 @@ def get_assignable_members_list():
 		return list(first_list) + list(last_list)
 	else:
 		return MainQueueMember.objects.all();
+
+def get_busy_members_list():
+	return list(MainQueueMember.objects.filter(status = 1))
 	
+def get_current_queue():
+	print "BUSY"
+	print get_busy_members_list()
+	print "AVAILABLE"
+	print get_assignable_members_list()
+	return get_busy_members_list() + get_assignable_members_list()
 
 def release_busy():
-	MainQueueMember.objects.filter(status=1).update(status=2) 
+	MainQueueMember.objects.filter(status=1).update(status=0) 
 
 def load_config():
-	config = GeneralConfiguration.objects.get(pk=1)
-	if config == None:
+	try:
+		config = GeneralConfiguration.objects.get(pk=1)
+	except:
 		config = GeneralConfiguration();
 		config.id=1
 		config.save()
@@ -94,7 +108,7 @@ def groups(request):
 
 @login_required(login_url='/tecnolunchs/')
 def queues(request):    
-	mqm_list = MainQueueMember.objects.all() 
+	mqm_list = get_current_queue()
 	template = loader.get_template('queues_main.html')
 	context = RequestContext(request, {'mqm_list': mqm_list})
 	return HttpResponse(template.render(context))
