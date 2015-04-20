@@ -1,6 +1,6 @@
 from django import template
 from django.contrib.auth.decorators import login_required
-from ..models import TransporterGroup, TransporterGroupMember
+from ..models import TransporterGroup, TransporterGroupMember, MainQueueMember, PunishmentQueueMember, GeneralConfiguration
 
 register = template.Library()
 
@@ -29,3 +29,20 @@ def get_group_details(group_id):
 		group = TransporterGroup.objects.get(pk=group_id)
 	members_list = group.members.all() if group !=None else None
 	return {'members_list': members_list}
+
+def load_config():
+	try:
+		config = GeneralConfiguration.objects.get(pk=1)
+	except:
+		config = GeneralConfiguration();
+		config.id=1
+		config.save()
+	return config
+
+
+@login_required(login_url='/tecnolunchs/')
+@register.inclusion_tag('general_settings.html', takes_context=True)
+def show_general_settings(context):	
+	config= load_config()
+	print config
+	return {'config': config}

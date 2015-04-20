@@ -5,7 +5,7 @@ from django import template
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from models import TransporterGroup, TransporterGroupMember, MainQueueMember, PunishmentQueueMember, GeneralConfiguration
-from templatetags.group_main import get_group_details 
+from templatetags.group_main import get_group_details, load_config
 from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 from django.db.models import F
@@ -79,24 +79,11 @@ def get_assignable_members_list():
 def get_busy_members_list():
 	return list(MainQueueMember.objects.filter(status = 1))
 	
-def get_current_queue():
-	print "BUSY"
-	print get_busy_members_list()
-	print "AVAILABLE"
-	print get_assignable_members_list()
+def get_current_queue():	
 	return get_busy_members_list() + get_assignable_members_list()
 
 def release_busy():
 	MainQueueMember.objects.filter(status=1).update(status=0) 
-
-def load_config():
-	try:
-		config = GeneralConfiguration.objects.get(pk=1)
-	except:
-		config = GeneralConfiguration();
-		config.id=1
-		config.save()
-	return config
 
 
 @login_required(login_url='/tecnolunchs/')
@@ -114,6 +101,22 @@ def queues(request):
 	return HttpResponse(template.render(context))
 
 
+@login_required(login_url='/tecnolunchs/')
+def admin(request):    
+	config= load_config()
+	template = loader.get_template('admin_main.html')
+	context = RequestContext(request, {'config': config})
+	return HttpResponse(template.render(context))
+
+@login_required(login_url='/tecnolunchs/')
+def save_gral_settings(request, group_size):    
+	config= load_config()
+	config.group_size= group_size
+	config.save()
+	template = loader.get_template('general_settings.html')
+	context = RequestContext(request, {'config': config})
+	return HttpResponse(template.render(context))
+
 def logout(request):
     auth_logout(request)
     return redirect('/tecnolunchs/')
@@ -122,3 +125,15 @@ def logout(request):
 def show_group_details(request, group_id):   
 	return render_to_response('group_detail.html', get_group_details(group_id), context_instance=RequestContext(request));
 	
+@login_required(login_url='/tecnolunchs/')
+def today(request):    
+	config= load_config()
+	list = TransporterGroup.objects.filter(assigned_date=timezone.now())
+
+	group = list[0] if len(list)>0 else None
+	if group!= None:
+		members = group.members.all()
+		print members
+	template = loader.get_template('today_main.html')
+	context = RequestContext(request, {'group': group , 'members': members})
+	return HttpResponse(template.render(context))
