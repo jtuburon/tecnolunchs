@@ -38,7 +38,7 @@ INSTALLED_APPS = (
     #'#django.contrib.messages',
     'django.contrib.staticfiles',
     'social_auth',
-    'tecnolunchs',
+    'tecnolunches',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -108,7 +108,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/tecnolunchs/welcome'
+LOGIN_REDIRECT_URL = '/tecnolunches/welcome'
 LOGIN_ERROR_URL = '/login-error/'
 
 

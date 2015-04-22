@@ -1,0 +1,13 @@
+{% if groups %}
+	<div class="row placeholders">
+	 {% for g in groups %}
+		<div class="col-xs-6 col-sm-3">
+			<img onclick="show_group_details({{g.id}});" src="/static/images/transportgroup_128.png" >
+			<h4>{{g.name}}</h4>
+			<span class="text-muted">{{g.assigned_date}}</span>
+		</div>
+	{% endfor %}
+	</div>
+{% else %}
+    <p>No TransportersGroups are available.</p>
+{% endif %}
