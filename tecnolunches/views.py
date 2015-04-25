@@ -73,8 +73,8 @@ def get_assignable_members_list():
 		first_list= MainQueueMember.objects.filter(id__gt= mqm_busy_last.id)
 		last_list= MainQueueMember.objects.filter(id__lt= mqm_busy_first.id)
 		return list(first_list) + list(last_list)
-	else:
-		return MainQueueMember.objects.all();
+	else:		
+		return list(MainQueueMember.objects.all());
 
 def get_busy_members_list():
 	return list(MainQueueMember.objects.filter(status = 1))
@@ -98,6 +98,13 @@ def queues(request):
 	mqm_list = get_current_queue()
 	template = loader.get_template('queues_main.html')
 	context = RequestContext(request, {'mqm_list': mqm_list})
+	return HttpResponse(template.render(context))
+
+
+@login_required(login_url='/tecnolunches/')
+def menues(request):    	
+	template = loader.get_template('menues_main.html')
+	context = RequestContext(request, {})
 	return HttpResponse(template.render(context))
 
 

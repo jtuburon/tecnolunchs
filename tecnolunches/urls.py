@@ -9,6 +9,7 @@ urlpatterns = [
 	url(r'^groups/$', views.groups, name='groups'),
 	url(r'^group_details/(?P<group_id>[0-9]+)/$', views.show_group_details, name='group_details'),
 	url(r'^queues/$', views.queues, name='queues'),
+	url(r'^menues/$', views.menues, name='menues'),
 	url(r'^admin/$', views.admin, name='admin'),
 	url(r'^admin/save_gral_settings/(?P<group_size>[0-9]+)/$', views.save_gral_settings, name='save_gral_settings'),
 	url(r'^admin/today/$', views.today, name='today'),

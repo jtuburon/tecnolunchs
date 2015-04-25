@@ -10,6 +10,16 @@ function show_group_details(group_id){
 	});
 }
 
+function show_menues(){
+	$.get("menues/", function( data ) {
+		$("#main_container").html(data);
+		$(".menu-available-sw").bootstrapSwitch();
+		$(".menu-available-sw").on('switchChange.bootstrapSwitch', function(event, state) {
+				
+		});
+	});
+}
+
 function show_queues(){
 	$.get("queues/", function( data ) {
 		$("#main_container").html(data);

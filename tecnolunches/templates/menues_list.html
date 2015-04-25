@@ -1,0 +1,22 @@
+<script src="/static/js/bootstrap-switch.js"></script>
+<div id="menues_list" class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Name</th>                
+        <th>Available (?)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in menues %}          
+          <tr>
+            <td>1</td>
+            <td>{{ m.name}}</td>            
+            
+            <td><input class="menu-available-sw" type="checkbox" {% if m.status == 1%} checked {% endif %} data-size="mini"></td>            
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

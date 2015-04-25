@@ -49,4 +49,13 @@ class PunishmentQueueMember(models.Model):
 	registration_date = models.DateField('date registered', auto_now_add=True)
 	
 class GeneralConfiguration(models.Model):
-	group_size = models.IntegerField(default=3)
+	group_size = models.IntegerField(default=1)
+
+class MenuItem(models.Model):
+	name = models.CharField(max_length=200)
+	assigned_date = models.DateField('date assigned', auto_now_add=True)
+	MENU_ITEM_STATUSES = (		
+		(0, 'NOT AVAILABE'),
+		(1, 'AVAILABLE'),
+	)
+	status = models.IntegerField(choices=MENU_ITEM_STATUSES, default=0)
