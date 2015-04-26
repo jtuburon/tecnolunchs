@@ -33,10 +33,8 @@ def get_group_details(group_id):
 @login_required(login_url='/tecnolunches/')
 @register.inclusion_tag('menues_list.html', takes_context=True)
 def show_menues_list(context):
-	menues = MenuItem.objects.order_by('name')    
+	menues = MenuItem.objects.order_by('-status', 'name')    
 	return {'menues': menues}
-
-
 def load_config():
 	try:
 		config = GeneralConfiguration.objects.get(pk=1)

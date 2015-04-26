@@ -22,7 +22,7 @@
             <td>{{ member.user.get_full_name}}</td>
             <td>{{ member.checked_date}}</td>
             <td>{{ member.get_status_display}}</td>                  
-            <td><input class="accomplishment-sw" type="checkbox" checked data-size="mini"></td>
+            <td><input name="accomplishment-sw-{{member.id}}" class="accomplishment-sw" type="checkbox" {% if member.status == 3%} checked {% endif %} data-size="mini"></td>
           </tr>
       {% endfor %}
     </tbody>

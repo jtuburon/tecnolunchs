@@ -15,8 +15,17 @@ function show_menues(){
 		$("#main_container").html(data);
 		$(".menu-available-sw").bootstrapSwitch();
 		$(".menu-available-sw").on('switchChange.bootstrapSwitch', function(event, state) {
-				
+			data= this.name.split("-");
+			menu_id= data[data.length-1];
+			set_availability(menu_id, state)			
 		});
+	});
+}
+
+function set_availability(menu_id, status){
+	$.get("menues/setavailable/"+menu_id+"/"+status+"/", function( data ) {				
+		//$('#notsModal').modal('show');
+		show_menues();
 	});
 }
 
@@ -43,13 +52,16 @@ function show_today_admin(){
 		$("#main_container").html(data);		
 		$(".accomplishment-sw").bootstrapSwitch();
 		$(".accomplishment-sw").on('switchChange.bootstrapSwitch', function(event, state) {
-			set_accomplishment_state(group_member, state);
+			data= this.name.split("-");
+			group_member_id= data[data.length-1];			
+			set_accomplishment_state(group_member_id, state);
 		});
 	});
 }
 
 function set_accomplishment_state(group_member, state){
-	$.get("admin/today/set_accomplishment/", function( data ) {		
-		console.log(data);	
+	$.get("admin/today/group_member/set_accomplishment/"+group_member+"/"+state, function( data ) {				
+		//$('#notsModal').modal('show');
+		show_today_admin();
 	});
 }
