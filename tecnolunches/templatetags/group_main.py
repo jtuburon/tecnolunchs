@@ -1,6 +1,8 @@
 from django import template
 from django.contrib.auth.decorators import login_required
-from ..models import TransporterGroup, TransporterGroupMember, MainQueueMember, PunishmentQueueMember, GeneralConfiguration, MenuItem
+from ..models import GeneralConfiguration, MenuItem
+from ..models import TransporterGroup, TransporterGroupMember
+from ..models import QueueMember, MainQueueMember, ExtraQueueMember
 
 register = template.Library()
 
@@ -35,6 +37,12 @@ def get_group_details(group_id):
 def show_menues_list(context):
 	menues = MenuItem.objects.order_by('-status', 'name')    
 	return {'menues': menues}
+
+@login_required(login_url='/tecnolunches/')
+@register.inclusion_tag('menu_item_form.html', takes_context=True)
+def show_menu_form(context, menu):		
+	return {"menu": menu}
+
 def load_config():
 	try:
 		config = GeneralConfiguration.objects.get(pk=1)

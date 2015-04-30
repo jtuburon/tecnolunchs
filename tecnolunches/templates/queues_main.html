@@ -6,7 +6,20 @@
     <nav>
     <ul class="pagination">
       {% for m in mqm_list %}
-        <li {% if m.status = 1 %}class="active" {% else %} class="disabled" {% endif%}><a href="#">{{ m.user}}</a></li>
+        <li {% if m.status = 1 %}class="active" {% else %} class="disabled" {% endif%}><a href="#">{{ m.member.user}}</a></li>
+      {% endfor %} 
+    </ul>
+    </nav>
+  {% else %}
+    <p>No members in this queue.</p>
+  {% endif %}
+  <br>
+  <h3 class="sub-header">Temporary queue's members</h3>
+  {% if tqm_list|length > 0 %}
+    <nav>
+    <ul class="pagination-lg">
+      {% for m in tqm_list %} 
+        <li {% if m.status = 1 %}class="active" {% else %} class="disabled" {% endif%}><a href="#">{{ m.member.user}}</a></li>
       {% endfor %} 
     </ul>
     </nav>
@@ -19,7 +32,7 @@
     <nav>
     <ul class="pagination-lg">
       {% for m in pqm_list %} 
-        <li {% if m.status = 1 %}class="active" {% else %} class="disabled" {% endif%}><a href="#">{{ m.user}}</a></li>
+        <li {% if m.status = 1 %}class="active" {% else %} class="disabled" {% endif%}><a href="#">{{ m.member.user}}</a></li>
       {% endfor %} 
     </ul>
     </nav>

@@ -4,7 +4,10 @@ from django.template import RequestContext, loader
 from django import template
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
-from models import TransporterGroup, TransporterGroupMember, MainQueueMember, PunishmentQueueMember, GeneralConfiguration, MenuItem
+from models import GeneralConfiguration, MenuItem
+from models import TransporterGroup, TransporterGroupMember
+from models import QueueMember, MainQueueMember, ExtraQueueMember
+
 from templatetags.group_main import get_group_details, load_config
 from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
@@ -30,12 +33,13 @@ def welcome(request):
 	return HttpResponse(template.render(context))
 
 def update_main_queue(user):
-	mqm_list = MainQueueMember.objects.filter(user=user) 
-	mqm = mqm_list[0] if len(mqm_list) >0 else None
-	if mqm == None:
-		mqm = MainQueueMember()
-		mqm.user = user;
-		mqm_busy_list = MainQueueMember.objects.filter(status = 1) 
+	try:
+		qm= QueueMember.objects.get(user=user)
+	except:
+		qm = QueueMember(user= user);
+		qm.save()
+		mqm = MainQueueMember(member= qm)		
+		mqm_busy_list =MainQueueMember.objects.filter(status = 1).order_by('order')
 		mqm_first= mqm_busy_list[0] if len(mqm_busy_list)>0 else None
 		if mqm_first != None:
 			mqm.order= mqm_first.order 
@@ -57,10 +61,10 @@ def generate_new_group():
 		for i in range(assignables_count):
 			assignables_list[i].status=1;
 			assignables_list[i].save();
-			member = TransporterGroupMember()
-			member.transport_group= group
-			member.user =assignables_list[i].user
-			member.save();
+			mqm = TransporterGroupMember()
+			mqm.transport_group= group
+			mqm.member =assignables_list[i].member
+			mqm.save();
 	
 def get_assignable_members_list():
 	mqm_busy_list = MainQueueMember.objects.filter(status = 1) 
@@ -71,8 +75,8 @@ def get_assignable_members_list():
 	print "last"
 	print mqm_busy_last
 	if(mqm_busy_first!= None and mqm_busy_last!=None):
-		first_list= MainQueueMember.objects.filter(id__gt= mqm_busy_last.id)
-		last_list= MainQueueMember.objects.filter(id__lt= mqm_busy_first.id)
+		first_list= MainQueueMember.objects.filter(order__gt= mqm_busy_last.order)
+		last_list= MainQueueMember.objects.filter(order__lt= mqm_busy_first.order)
 		return list(first_list) + list(last_list)
 	else:		
 		return list(MainQueueMember.objects.all());
@@ -97,8 +101,10 @@ def groups(request):
 @login_required(login_url='/tecnolunches/')
 def queues(request):    
 	mqm_list = get_current_queue()
-	template = loader.get_template('queues_main.html')
-	context = RequestContext(request, {'mqm_list': mqm_list})
+	pqm_list=[]
+	tqm_list=[]
+	template = loader.get_template('queues_main.html')	
+	context = RequestContext(request, {'mqm_list': mqm_list, 'pqm_list': pqm_list, 'tqm_list': tqm_list})
 	return HttpResponse(template.render(context))
 
 

@@ -22,6 +22,10 @@ function show_menues(){
 	});
 }
 
+function add_menu_item(){	
+	$('#menu_item_modal').modal('show');
+}
+
 function set_availability(menu_id, status){
 	$.get("menues/setavailable/"+menu_id+"/"+status+"/", function( data ) {				
 		//$('#notsModal').modal('show');
