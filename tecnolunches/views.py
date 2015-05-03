@@ -12,6 +12,7 @@ from templatetags.group_main import get_group_details, load_config
 from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 from django.db.models import F
+from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 import json
 
@@ -123,6 +124,23 @@ def set_menu_availability(request, menu_id, menu_status):
 	msg= "This menu is now available!" if menu_status else "This menu is now unavailable!"	
 	response_data= {"status": True, "msg": msg}
 	return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+@login_required(login_url='/tecnolunches/')
+@csrf_exempt
+def save_menu(request):    	
+	name = request.POST.get("name", "")
+	menu_id = request.POST.get("menu_item", "")
+	try:
+		menu = MenuItem.objects.get(pk=menu_id);
+		menu.name= name
+		msg = "MenuItem was sucesfully created!!"
+	except:
+		menu = MenuItem(name= name);	
+		msg = "MenuItem was sucesfully updated!!"
+	menu.save();
+	response_data= {"status": True, "msg": msg}
+	return HttpResponse(json.dumps(response_data), content_type="application/json")
+
 
 
 @login_required(login_url='/tecnolunches/')

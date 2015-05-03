@@ -11,14 +11,14 @@ function show_group_details(group_id){
 }
 
 function show_menues(){
-	$.get("menues/", function( data ) {
-		$("#main_container").html(data);
+	$.get("menues/", function( data ) {		
+		$("#main_container").html(data);		
 		$(".menu-available-sw").bootstrapSwitch();
 		$(".menu-available-sw").on('switchChange.bootstrapSwitch', function(event, state) {
 			data= this.name.split("-");
 			menu_id= data[data.length-1];
 			set_availability(menu_id, state)			
-		});
+		});		
 	});
 }
 
@@ -26,9 +26,12 @@ function add_menu_item(){
 	$('#menu_item_modal').modal('show');
 }
 
+function edit_menu_item(menu_id){	
+	$('#menu_item_modal').modal('show');
+}
+
 function set_availability(menu_id, status){
-	$.get("menues/setavailable/"+menu_id+"/"+status+"/", function( data ) {				
-		//$('#notsModal').modal('show');
+	$.get("menues/setavailable/"+menu_id+"/"+status+"/", function( data ) {						
 		show_menues();
 	});
 }
@@ -51,6 +54,20 @@ function save_general_settings(){
 	});
 }
 
+function save_menu_item(){	
+	$.post("menues/save/", 
+		{ menu_item: -1, name: $("#menu_name").val(), csrfmiddlewaretoken: '{{ csrf_token }}'},
+		function(data) {		
+			$('#menu_item_modal').modal('hide');
+			$('#menu_item_modal').on('hidden.bs.modal', function (e) {			  
+				show_menues();
+			});
+						
+		}
+	);
+	
+}
+
 function show_today_admin(){
 	$.get("admin/today/", function( data ) {		
 		$("#main_container").html(data);		
@@ -64,8 +81,7 @@ function show_today_admin(){
 }
 
 function set_accomplishment_state(group_member, state){
-	$.get("admin/today/group_member/set_accomplishment/"+group_member+"/"+state, function( data ) {				
-		//$('#notsModal').modal('show');
+	$.get("admin/today/group_member/set_accomplishment/"+group_member+"/"+state, function( data ) {						
 		show_today_admin();
 	});
 }
