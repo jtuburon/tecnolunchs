@@ -28,6 +28,11 @@ function add_menu_item(){
 
 function edit_menu_item(menu_id){	
 	$('#menu_item_modal').modal('show');
+	$('#menu_item_modal').on('shown.bs.modal', function (e) {			  
+		$.get("menu/find/"+ menu_id+"/", function( data ) {
+			$("#main_container").html(data);
+		});
+	});
 }
 
 function set_availability(menu_id, status){
