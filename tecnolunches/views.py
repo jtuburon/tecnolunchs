@@ -144,6 +144,23 @@ def save_menu(request):
 
 
 @login_required(login_url='/tecnolunches/')
+def find_menu(request, menu_id):    		
+	try:
+		menu = MenuItem.objects.get(pk=menu_id);		
+	except:		
+		menu = None	
+	template = loader.get_template('menu_item_form.html')
+	context = RequestContext(request, {'menu': menu})
+	return HttpResponse(template.render(context))
+
+
+@login_required(login_url='/tecnolunches/')
+def new_menu(request):    		
+	template = loader.get_template('menu_item_form.html')
+	context = RequestContext(request, {'menu': None})
+	return HttpResponse(template.render(context))
+
+@login_required(login_url='/tecnolunches/')
 def admin(request):    
 	config= load_config()
 	template = loader.get_template('admin_main.html')

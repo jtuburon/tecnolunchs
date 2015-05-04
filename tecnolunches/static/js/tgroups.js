@@ -24,13 +24,18 @@ function show_menues(){
 
 function add_menu_item(){	
 	$('#menu_item_modal').modal('show');
+	$('#menu_item_modal').on('shown.bs.modal', function (e) {			  
+		$.get("menues/new/", function( data ) {
+			$("#menu_modal_body").html(data);
+		});
+	});
 }
 
 function edit_menu_item(menu_id){	
 	$('#menu_item_modal').modal('show');
 	$('#menu_item_modal').on('shown.bs.modal', function (e) {			  
-		$.get("menu/find/"+ menu_id+"/", function( data ) {
-			$("#main_container").html(data);
+		$.get("menues/find/"+ menu_id+"/", function( data ) {
+			$("#menu_modal_body").html(data);
 		});
 	});
 }
@@ -61,7 +66,7 @@ function save_general_settings(){
 
 function save_menu_item(){	
 	$.post("menues/save/", 
-		{ menu_item: -1, name: $("#menu_name").val(), csrfmiddlewaretoken: '{{ csrf_token }}'},
+		{menu_item: $("#menu_id").val(), name: $("#menu_name").val(), csrfmiddlewaretoken: '{{ csrf_token }}'},
 		function(data) {		
 			$('#menu_item_modal').modal('hide');
 			$('#menu_item_modal').on('hidden.bs.modal', function (e) {			  

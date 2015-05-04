@@ -13,7 +13,6 @@
           <tr>
             <td>{{ forloop.counter }}</td>
             <td><a href="javascript:edit_menu_item({{ m.id}});">{{ m.name}}</a></td>            
-            
             <td><input name="menu-sw-{{m.id}}" class="menu-available-sw" type="checkbox" {% if m.status == 1%} checked {% endif %} data-size="mini"></td>            
           </tr>
       {% endfor %}
