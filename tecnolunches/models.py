@@ -2,6 +2,7 @@ from django.db import models
 
 class GeneralConfiguration(models.Model):
 	group_size = models.IntegerField(default=1)
+	final_time = models.TimeField(default='10:00:00')
 
 class MenuItem(models.Model):
 	name = models.CharField(max_length=200)

@@ -8,7 +8,7 @@ from models import GeneralConfiguration, MenuItem
 from models import TransporterGroup, TransporterGroupMember
 from models import QueueMember, MainQueueMember, ExtraQueueMember
 
-from templatetags.group_main import get_group_details, load_config
+from templatetags.tags_rendering import get_group_details, load_config
 from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 from django.db.models import F
