@@ -24,7 +24,7 @@ def index(request):
     return HttpResponse(template.render(context))
 
 
-@login_required(login_url='/tecnolunchs/')
+@login_required(login_url='/tecnolunches/')
 def welcome(request):    
 	user=request.user
 	update_main_queue(user)
