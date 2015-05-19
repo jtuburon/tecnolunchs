@@ -1,4 +1,5 @@
 function show_groups(){
+	enableTab(2);
 	$.get("groups/", function( data ) {
 		$("#main_container").html(data);
 	});
@@ -11,6 +12,7 @@ function show_group_details(group_id){
 }
 
 function show_menues(){
+	enableTab(5);
 	$.get("menues/", function( data ) {		
 		$("#main_container").html(data);		
 		$(".menu-available-sw").bootstrapSwitch();
@@ -47,21 +49,30 @@ function set_availability(menu_id, status){
 }
 
 function show_queues(){
+	enableTab(3);
 	$.get("queues/", function( data ) {
 		$("#main_container").html(data);
 	});
 }
 
 function show_settings(){
+	enableTab(4);
 	$.get("admin/", function( data ) {
 		$("#main_container").html(data);
 	});
 }
 
 function save_general_settings(){	
-	$.get("admin/save_gral_settings/"+ $("#group_size").val() + "/", function( data ) {				
-		$("#general_settings").html(data);
-	});
+	$.post("admin/save_gral_settings/", 
+		{
+			group_size: $("#group_size").val(), 
+			final_time: $("#final_time").val(), 
+			csrfmiddlewaretoken: '{{ csrf_token }}'
+		},
+		function(data) {		
+			$("#general_settings").html(data);				
+		}
+	);
 }
 
 function save_menu_item(){	
@@ -79,6 +90,7 @@ function save_menu_item(){
 }
 
 function show_today_admin(){
+	enableTab(7);
 	$.get("admin/today/", function( data ) {		
 		$("#main_container").html(data);		
 		$(".accomplishment-sw").bootstrapSwitch();
@@ -94,4 +106,27 @@ function set_accomplishment_state(group_member, state){
 	$.get("admin/today/group_member/set_accomplishment/"+group_member+"/"+state, function( data ) {						
 		show_today_admin();
 	});
+}
+
+function show_members(){
+	enableTab(6);
+	alert('Not implemented yet!!!');
+}
+
+function request_my_lunch(){
+	enableTab(1);
+	alert('Not implemented yet!!!');
+}
+
+
+
+
+function enableTab(tabID){
+	for(id=1 ; id<=7; id++){
+		if(tabID== id){
+			$('#op0'+id).toggleClass("active");
+		}else{
+			$('#op0'+id).removeClass();
+		}
+	}
 }

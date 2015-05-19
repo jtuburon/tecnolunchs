@@ -14,6 +14,7 @@ from django.contrib.auth.models import User
 from django.db.models import F
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
+from datetime import datetime
 import json
 
 register = template.Library()
@@ -168,9 +169,13 @@ def admin(request):
 	return HttpResponse(template.render(context))
 
 @login_required(login_url='/tecnolunches/')
-def save_gral_settings(request, group_size):    
-	config= load_config()
+@csrf_exempt
+def save_gral_settings(request):    
+	group_size = request.POST.get("group_size", "")
+	final_time = datetime.strptime(request.POST.get("final_time", ""), '%I:%M %p').time()
+	config= load_config()	
 	config.group_size= group_size
+	config.final_time= final_time
 	config.save()
 	template = loader.get_template('general_settings.html')
 	context = RequestContext(request, {'config': config})

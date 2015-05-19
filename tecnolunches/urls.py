@@ -15,7 +15,7 @@ urlpatterns = [
 	url(r'^menues/find/(?P<menu_id>[0-9]+)/$', views.find_menu, name='find_menu'),
 	url(r'^menues/setavailable/(?P<menu_id>[0-9]+)/(?P<menu_status>(true|false))/$', views.set_menu_availability, name='set_menu_availability'),
 	url(r'^admin/$', views.admin, name='admin'),
-	url(r'^admin/save_gral_settings/(?P<group_size>[0-9]+)/$', views.save_gral_settings, name='save_gral_settings'),
+	url(r'^admin/save_gral_settings/$', views.save_gral_settings, name='save_gral_settings'),
 	url(r'^admin/today/$', views.today, name='today'),
 	url(r'^admin/today/group_member/set_accomplishment/(?P<group_member_id>[0-9]+)/(?P<group_member_status>(true|false))/$', views.set_groupmember_accomplishment, name='set_groupmember_accomplishment'),
 ]

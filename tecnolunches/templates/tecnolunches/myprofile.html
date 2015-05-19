@@ -43,14 +43,15 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">            
-            <li><a href="javascript:alert('not implemented yet')">Request my Lunch</a></li>            
-            <li class="active"><a href="javascript:show_groups()">Lastest Transporters' Groups<span class="sr-only">(current)</span></a></li>
-            <li><a href="javascript:show_queues()">Tecnolunches' Queues</a></li>            
+            <li id="op01"><a href="javascript:request_my_lunch()">Request my Lunch</a></li>            
+            <li id="op02" class="active"><a href="javascript:show_groups()">Lastest Transporters' Groups<span class="sr-only">(current)</span></a></li>
+            <li id="op03"><a href="javascript:show_queues()">Tecnolunches' Queues</a></li>            
           </ul>
           <ul class="nav nav-sidebar">            
-            <li><a href="javascript:show_menues()">Manage menues for Today</a></li>
-            <li><a href="javascript:show_today_admin()">Today's Group</a></li>
-            <li><a href="javascript:show_settings()">Settings</a></li>            
+            <li id="op04"><a href="javascript:show_settings()">Administration</a></li>    
+            <li id="op05"><a href="javascript:show_menues()">Manage menues for Today</a></li>
+            <li id="op06"><a href="javascript:show_members()">Tecnolunches' members</a></li>            
+            <li id="op07"><a href="javascript:show_today_admin()">Today's Group</a></li>
           </ul>
         </div>
         <div id="main_container">
