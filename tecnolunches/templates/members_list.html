@@ -1,0 +1,21 @@
+<script src="/static/js/bootstrap-switch.js"></script>
+<div id="menues_list" class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Name</th>                
+        <th>Permanent/Temporary</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in members %}          
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td><a href="javascript:edit_menu_item({{ m.id}});">{{ m.user.get_full_name}}</a></td>            
+            <td><input name="member-sw-{{m.user.id}}" data-on-text="Permanent"  data-off-color="warning" data-off-text="Temporary" class="member-permanent-sw" type="checkbox" {% if m.member_type == 1%} checked {% endif %} data-size="mini"></td>            
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

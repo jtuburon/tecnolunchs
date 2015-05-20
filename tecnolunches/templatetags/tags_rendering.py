@@ -59,3 +59,17 @@ def show_general_settings(context):
 	config= load_config()
 	print config
 	return {'config': config}
+
+
+@login_required(login_url='/tecnolunches/')
+@register.inclusion_tag('members_list.html', takes_context=True)
+def show_members_list(context):
+	print "Helllo"
+	members = QueueMember.objects.order_by('member_type', 'user')    
+	return {'members': members}
+
+@login_required(login_url='/tecnolunches/')
+@register.inclusion_tag('reqs_menues_list.html', takes_context=True)
+def show_reqs_menues_list(context):
+	menues = MenuItem.objects.order_by('-status', 'name')    
+	return {'menues': menues}

@@ -211,3 +211,27 @@ def set_groupmember_accomplishment(request, group_member_id, group_member_status
 	msg= "This member accomplished!" if group_member_status else "This member didn't acomplish!!"	
 	response_data= {"status": True, "msg": msg}
 	return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+@login_required(login_url='/tecnolunches/')
+def members(request):    	
+	template = loader.get_template('members_main.html')
+	context = RequestContext(request, {})
+	return HttpResponse(template.render(context))
+
+@login_required(login_url='/tecnolunches/')
+def set_member_type(request, member_id, member_type):    	
+	member_type= 1 if json.loads(member_type) else 2	
+	member = QueueMember.objects.get(pk=member_id);
+	member.member_type = member_type
+	member.save();
+	msg= "This member is now permanent!" if member_type == 1 else "This member is now temporary!"	
+	response_data= {"status": True, "msg": msg}
+	return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+@login_required(login_url='/tecnolunches/')
+def requests(request):    	
+	template = loader.get_template('requests_main.html')
+	context = RequestContext(request, {})
+	return HttpResponse(template.render(context))

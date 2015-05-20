@@ -110,12 +110,31 @@ function set_accomplishment_state(group_member, state){
 
 function show_members(){
 	enableTab(6);
-	alert('Not implemented yet!!!');
+	$.get("members/", function( data ) {
+		$("#main_container").html(data);
+		$(".member-permanent-sw").bootstrapSwitch();
+		$(".member-permanent-sw").on('switchChange.bootstrapSwitch', function(event, state) {
+			data= this.name.split("-");
+			member_id= data[data.length-1];
+			set_member_type(member_id, state)			
+		});		
+	});
+
+}
+
+
+function set_member_type(member_id, type){
+	$.get("members/settype/"+member_id+"/"+type+"/", function( data ) {						
+		show_members();
+	});
 }
 
 function request_my_lunch(){
 	enableTab(1);
-	alert('Not implemented yet!!!');
+	$.get("requests/", function( data ) {
+		$("#main_container").html(data);	
+	});
+	
 }
 
 

@@ -18,4 +18,7 @@ urlpatterns = [
 	url(r'^admin/save_gral_settings/$', views.save_gral_settings, name='save_gral_settings'),
 	url(r'^admin/today/$', views.today, name='today'),
 	url(r'^admin/today/group_member/set_accomplishment/(?P<group_member_id>[0-9]+)/(?P<group_member_status>(true|false))/$', views.set_groupmember_accomplishment, name='set_groupmember_accomplishment'),
+	url(r'^members/$', views.members, name='members'),
+	url(r'^members/settype/(?P<member_id>[0-9]+)/(?P<member_type>(true|false))/$', views.set_member_type, name='set_member_type'),
+	url(r'^requests/$', views.requests, name='requests'),
 ]

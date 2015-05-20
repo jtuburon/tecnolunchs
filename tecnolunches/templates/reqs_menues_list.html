@@ -1,0 +1,21 @@
+<script src="/static/js/bootstrap-switch.js"></script>
+<div id="menues_list" class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Name</th>                
+        <th>Cantidad</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in menues %}          
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td><a href="javascript:edit_menu_item({{ m.id}});">{{ m.name}}</a></td>            
+            <td><input class="col-sm-1" name="menu-id-{{m.id}}" type="text"/></td>            
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
